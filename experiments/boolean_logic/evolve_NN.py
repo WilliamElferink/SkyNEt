@@ -35,19 +35,18 @@ fitnessArray = np.zeros((cf.generations, cf.genomes))
 fitnessTemp = np.zeros((cf.genomes, cf.fitnessavg))
 outputAvg = np.zeros((cf.fitnessavg, len(x[0])))
 outputTemp = np.zeros((cf.genomes, len(x[0])))
-controlVoltages = np.zeros(cf.genes)
+#controlVoltages = np.zeros(cf.genes)
 
 # Initialize save directory
 saveDirectory = SaveLib.createSaveDirectory(cf.filepath, cf.name)
 
-# Initialize main figure
+## Initialize main figure
 mainFig = PlotBuilder.initMainFigEvolution(cf.genes, cf.generations, cf.genelabels, cf.generange)
 
 # Initialize NN
-main_dir = r'../../test/NN_test/data4nn/Data_for_testing/' 
-# NN model coming from /home/hruiz/Documents/PROJECTS/DARWIN/Data_Darwin/Devices/25_07_2018_CP-full-search-77K/lr2e-4_eps1000_mb512_25072018CP.pt
-dtype = torch.cuda.FloatTensor
-net = staNNet(main_dir+'TEST_NN.pt')
+main_dir = r'../../test/NN_test/data4nn/Data_for_testing/'
+dtype = torch.FloatTensor
+net = staNNet(main_dir+'NN_New.pt')
 
 # Initialize genepool
 genePool = Evolution.GenePool(cf)
@@ -56,23 +55,29 @@ genePool = Evolution.GenePool(cf)
 
 for i in range(cf.generations):
     start = time.time()
+   
     for j in range(cf.genomes):
         # Set the DAC voltages
-        for k in range(cf.genes-1):
-            controlVoltages[k] = genePool.MapGenes(
-                                    cf.generange[k], genePool.pool[j, k])
-
-        # Set the input scaling
-        x_scaled = x * genePool.MapGenes(cf.generange[-1], genePool.pool[j, -1])
-
+#        for k in range(cf.genes-1):
+#            controlVoltages[k] = genePool.MapGenes(
+#                                    cf.generange[k], genePool.pool[j, k])
+        #map input 
+        x_mapped = cf.inputrange[0] + x * ( cf.inputrange[1] -  cf.inputrange[0])
+        x_scaled = x_mapped * genePool.pool[j,-1]
+        
+        
         # Measure cf.fitnessavg times the current configuration
         for avgIndex in range(cf.fitnessavg):
             # Feed input to NN
+            # You only want to feed the control voltages and the input (remove input scaling)
             g = np.ones_like(target)[:,np.newaxis]*genePool.pool[j,:-1][:,np.newaxis].T
             x_dummy = np.concatenate((x_scaled.T,g),axis=1) # First input then genes; dims of input TxD
             inputs = torch.from_numpy(x_dummy).type(dtype)
+
             inputs = Variable(inputs)
+            
             output = net.outputs(inputs)
+            
 
 #            # Plot genome
             PlotBuilder.currentGenomeEvolution(mainFig, genePool.pool[j])
@@ -92,7 +97,6 @@ for i in range(cf.generations):
                                                output,
                                                j + 1, i + 1,
                                                fitnessTemp[j, avgIndex])
-
         outputTemp[j] = outputAvg[np.argmin(fitnessTemp[j])]
 
     genePool.fitness = fitnessTemp.min(1)  # Save fitness
