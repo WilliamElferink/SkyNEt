@@ -67,6 +67,7 @@ class experiment_config(config_class):
         ################################################
 
         # Define experiment
+        # The output of the NN used must be multiplied with 10 
         self.amplification = 1
         self.TargetGen = self.OR
         self.generations = 2
@@ -74,9 +75,12 @@ class experiment_config(config_class):
         #Change: possibility to set the clippingvalue. I also added this in the config_class, as it is still hard coded in Celestine's fitness function
         self.clpval = 350
         
-        #Generange and inputrange in Volts 
-        self.generange = [[-1.1, 0.7], [-1.1, 0.7], [-1.1, 0.7], [-1.1, 0.7],[-1.1, 0.7], [0.1, 0.9]]
-        #self.input_scaling = 0.9
+        #Change: possibility to indicate which electrodes are set to be the inputs 
+        #Generange (last columns is input scaling) and inputrange in Volts 
+        self.generange = [[-1.2,0.6], [-1.2,0.6],[-1.2,0.6], [-0.7,0.3], [-0.7,0.3], [0.9, 0.9]]
+        #It is assumed that the two inputs electrodes have the same range 
+        self.inputrange = [-1.2,0.6]
+        self.input_electrodes = [1,2]
      
         # Specify either partition or genomes
         self.partition = [5, 5, 5, 5, 5]

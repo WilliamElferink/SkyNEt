@@ -46,6 +46,8 @@ mainFig = PlotBuilder.initMainFigEvolution(cf.genes, cf.generations, cf.genelabe
 # Initialize NN
 main_dir = r'../../test/NN_test/data4nn/Data_for_testing/'
 dtype = torch.FloatTensor
+#Note: this is an old NN for which I dont remember the specific ranges. But they are approx the same as indicated in the cong_evolve_NN file. 
+#possibly the generange for this NN is 0.2 V or so smaller. 
 net = staNNet(main_dir+'NN_New.pt')
 
 # Initialize genepool
@@ -63,26 +65,31 @@ for i in range(cf.generations):
 #                                    cf.generange[k], genePool.pool[j, k])
         #Set the input scaling 
         x_scaled = x * genePool.pool[j,-1]
-        
-        
+       
         # Measure cf.fitnessavg times the current configuration
         for avgIndex in range(cf.fitnessavg):
             # Feed input to NN
-            # You only want to feed the control voltages and the input (remove input scaling)
+            
+            #You only want to feed the control voltages and the input (remove input scaling)
+            
+            #Change: 
+            #Note: self.input_electrodes = [1,2]. This can be adapted in the config_evolve_NN file 
             g = np.ones_like(target)[:,np.newaxis]*genePool.pool[j,:-1][:,np.newaxis].T
-            x_dummy = np.concatenate((x_scaled.T,g),axis=1) # First input then genes; dims of input TxD
-            inputs = torch.from_numpy(x_dummy).type(dtype)
+            
+            x_dummy = np.insert(g, cf.input_electrodes[0], x_scaled.T[:,0],axis=1)
+            x_dummy = np.insert(x_dummy, cf.input_electrodes[1], x_scaled.T[:,1],axis=1)
 
+            inputs = torch.from_numpy(x_dummy).type(dtype)
             inputs = Variable(inputs)
-            
-            output = net.outputs(inputs)
-            
+            output = net.outputs(inputs) * cf.amplification 
+
 
 #            # Plot genome
             PlotBuilder.currentGenomeEvolution(mainFig, genePool.pool[j])
 
             # Train output
-            outputAvg[avgIndex] = cf.amplification * np.asarray(output)  # empty for now, as we have only one output node
+            #Change: amplification is moved to line 84
+            outputAvg[avgIndex] = np.asarray(output)  # empty for now, as we have only one output node
 
             # Calculate fitness
             # Change: forward the clipping value to the fitness function (before it was hardcoded in the fitness function)
@@ -90,7 +97,7 @@ for i in range(cf.generations):
                                                      target,
                                                      w, cf.clpval)
 #           # Plot output
-            # Change: forward the clipping value to the plot builder 
+            #Change: forward the clipping value to the plot builder 
             PlotBuilder.currentOutputEvolution(mainFig,
                                                t,
                                                target,
@@ -110,7 +117,7 @@ for i in range(cf.generations):
     outputArray[i, :, :] = outputTemp
     fitnessArray[i, :] = genePool.fitness
 
-#    # Update main figure
+    # Update main figure
     PlotBuilder.updateMainFigEvolution(mainFig,
                                        geneArray,
                                        fitnessArray,
