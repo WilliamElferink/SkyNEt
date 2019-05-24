@@ -76,7 +76,7 @@ class config_class(object):
         ############### Evolution settings #############
         ################################################
         self.generations = 500
-        self.generange = [[-600,600], [-900, 900], [-900, 900], [-900, 900], [-600, 600], [0.9, 0.9]]
+        self.generange = [[-600,600], [-900, 900], [-900, 900], [-900, 900], [-600, 600], [0.1, 0.5]]
       
         self.default_partition = [5, 5, 5, 5, 5]
         self.partition = self.default_partition.copy()
