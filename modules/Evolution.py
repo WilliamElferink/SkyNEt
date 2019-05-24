@@ -16,8 +16,6 @@ class GenePool(object):
         self.pool = np.zeros((self.genomes, self.genes))
         for i in range(0,self.genes):
             self.pool[:,i] = np.random.uniform(self.generange[i][0], self.generange[i][1], size=(self.genomes,))
-        np.random.seed(seed=None)
-        #input scaling between 0 and 1 
         self.fitness = np.zeros(self.genomes)
         self.partition = config_obj.partition
         self.mutationrate = config_obj.mutationrate
@@ -69,13 +67,6 @@ class GenePool(object):
                 mutatedpool[:,i] = np.random.triangular(self.generange[i][0], self.newpool[self.partition[0]:,i], self.generange[i][1])
             
         self.newpool[self.partition[0]:] = ((np.ones(self.newpool[self.partition[0]:].shape) - mask)*self.newpool[self.partition[0]:]  + mask * mutatedpool)
-        
-        #check if its is in the range 
-        for i in range(0,self.genes):
-            buff = self.newpool[self.partition[0]:,i] < self.generange[i][0]
-            self.newpool[self.partition[0]:][buff] = self.generange[i][0]
-            buff = self.newpool[self.partition[1]:,i] > self.generange[i][1]
-            self.newpool[self.partition[1]:][buff] = self.generange[i][1]
         
 
     def MapGenes(self,generange, gene):

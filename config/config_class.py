@@ -84,6 +84,8 @@ class config_class(object):
         self.mutationrate = 0.1
         self.fitnessavg = 1
         self.fitnessparameters = [1, 0, 1, 0.01]
+        #Change: possibility to set the clippingvalue. Before it was hardcoded in Celestines fitness function.
+        self.clpval = 350
 
         ################################################
         ###################  Methods ###################
@@ -100,13 +102,15 @@ class config_class(object):
     ####################################################
     ############# FITNESS METHODS ######################
     ####################################################
-    def FitnessNMSE(self, x, target):
+    #Change: add clpval as argument 
+    def FitnessNMSE(self, x, target,clpval):
         '''
         This function returns the normalized mean squared error of x w.r.t. target.
         '''
         return 1 / ((np.linalg.norm(x - target, 2)) ** 2 * (1 / len(x)))
-
-    def FitnessEvolution(self, x, target, W):
+    
+    #Change: add clpval as argument 
+    def FitnessEvolution(self, x, target, W, clpval):
         '''
         This implements the fitness function
         F = self.fitnessparameters[0] * m / (sqrt(r) + self.fitnessparameters[3] * abs(c)) + self.fitnessparameters[1] / r + self.fitnessparameters[2] * Q
@@ -150,7 +154,7 @@ class config_class(object):
         F = self.fitnessparameters[0] * m / (res**(.5) + self.fitnessparameters[3] * abs(c)) + self.fitnessparameters[1] / res + self.fitnessparameters[2] * Q
         clipcounter = 0
         for i in range(len(x_weighed)):
-            if(abs(x_weighed[i]) > 3.1*10):
+            if(abs(x_weighed[i]) > clpval):
                 clipcounter = clipcounter + 1
                 F = -100
         return F

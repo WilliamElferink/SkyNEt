@@ -126,17 +126,17 @@ def outputMainClassification(mainFig, outputArray, win, fitnessArray, currentGen
     plt.autoscale()
     plt.pause(0.01)
 
-def currentOutputEvolution(mainFig, t, target, currentOutput, genome, currentGeneration, fitness):
-     # clipping
-    buff = currentOutput < -350
-    currentOutput[buff] = -350
-    buff = currentOutput > 350
-    currentOutput[buff] = 350
+def currentOutputEvolution(mainFig, t, target, currentOutput, genome, currentGeneration, fitness, clpval):
+     # clipping 
+    buff1 = currentOutput < -clpval 
+    currentOutput[buff1] = -clpval 
+    buff2 = currentOutput > clpval 
+    currentOutput[buff2] = clpval 
     mainFig.axes[-1].lines.clear()
     mainFig.axes[-1].plot(t, currentOutput, 'r')
     mainFig.axes[-1].plot(t, target, 'b--')
     mainFig.axes[-1].legend(['Current output', 'Target'], loc = 1)
-    if fitness != -100:
+    if not np.any(buff1) and not np.any(buff2):
         mainFig.axes[-1].set_title('Genome ' + str(genome) + '/Generation ' + str(currentGeneration) + '/fitness ' + '{0:.2f}'.format(fitness))
     else:
         mainFig.axes[-1].set_title('Genome ' + str(genome) + '/Generation ' + str(currentGeneration) + '/Clipping' )

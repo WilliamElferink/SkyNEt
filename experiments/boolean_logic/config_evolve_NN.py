@@ -71,14 +71,18 @@ class experiment_config(config_class):
         self.TargetGen = self.OR
         self.generations = 2
         
+        #Change: possibility to set the clippingvalue. I also added this in the config_class, as it is still hard coded in Celestine's fitness function
+        self.clpval = 350
+        
         #Generange and inputrange in Volts 
         self.generange = [[-1.1, 0.7], [-1.1, 0.7], [-1.1, 0.7], [-1.1, 0.7],[-1.1, 0.7], [0.1, 0.9]]
-        self.inputrange = [-0.8,0.2]
         #self.input_scaling = 0.9
      
         # Specify either partition or genomes
         self.partition = [5, 5, 5, 5, 5]
-
+    
+        
+        
         # Documentation
         self.genelabels = [ 'CV1','CV2','CV3','CV4','CV5', 'Input Scaling']
 

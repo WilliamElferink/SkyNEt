@@ -61,9 +61,8 @@ for i in range(cf.generations):
 #        for k in range(cf.genes-1):
 #            controlVoltages[k] = genePool.MapGenes(
 #                                    cf.generange[k], genePool.pool[j, k])
-        #map input 
-        x_mapped = cf.inputrange[0] + x * ( cf.inputrange[1] -  cf.inputrange[0])
-        x_scaled = x_mapped * genePool.pool[j,-1]
+        #Set the input scaling 
+        x_scaled = x * genePool.pool[j,-1]
         
         
         # Measure cf.fitnessavg times the current configuration
@@ -86,17 +85,18 @@ for i in range(cf.generations):
             outputAvg[avgIndex] = cf.amplification * np.asarray(output)  # empty for now, as we have only one output node
 
             # Calculate fitness
+            # Change: forward the clipping value to the fitness function (before it was hardcoded in the fitness function)
             fitnessTemp[j, avgIndex]= cf.Fitness(outputAvg[avgIndex],
                                                      target,
-                                                     w)
-
-#            # Plot output
+                                                     w, cf.clpval)
+#           # Plot output
+            # Change: forward the clipping value to the plot builder 
             PlotBuilder.currentOutputEvolution(mainFig,
                                                t,
                                                target,
                                                output,
                                                j + 1, i + 1,
-                                               fitnessTemp[j, avgIndex])
+                                               fitnessTemp[j, avgIndex], cf.clpval)
         outputTemp[j] = outputAvg[np.argmin(fitnessTemp[j])]
 
     genePool.fitness = fitnessTemp.min(1)  # Save fitness
