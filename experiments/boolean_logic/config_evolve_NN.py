@@ -67,7 +67,6 @@ class experiment_config(config_class):
         ################################################
 
         # Define experiment
-        # The output of the NN used must be multiplied with 10 
         self.amplification = 1
         self.TargetGen = self.OR
         self.generations = 2

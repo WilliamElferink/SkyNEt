@@ -104,7 +104,7 @@ class config_class(object):
     ############# FITNESS METHODS ######################
     ####################################################
     #Change: add clpval as argument 
-    def FitnessNMSE(self, x, target):
+    def FitnessNMSE(self, x, target,clpval):
         '''
         This function returns the normalized mean squared error of x w.r.t. target.
         '''

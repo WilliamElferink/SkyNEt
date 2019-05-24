@@ -57,7 +57,6 @@ genePool = Evolution.GenePool(cf)
 
 for i in range(cf.generations):
     start = time.time()
-   
     for j in range(cf.genomes):
         # Set the DAC voltages
 #        for k in range(cf.genes-1):
