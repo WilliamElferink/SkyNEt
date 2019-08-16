@@ -62,11 +62,16 @@ class webNNet(torch.nn.Module):
         self._params = [{'params':[]}]  # attribute which builds the parameter groups, passed to optimizer
         
         # setting defaults
-        self.cuda = 'cpu'
+        if torch.cuda.is_available():
+            self.cuda='cuda'
+            self.dtype = torch.FloatTensor
+        else:
+            self.cuda = 'cpu'
+            self.dtype = torch.cuda.FloatTensor
         self.loss_fn = torch.nn.MSELoss()                   # loss function (besides regularization)
         self.custom_par = {}                                # keeps track of  custom parameters added
         self.nr_of_custom_params = 0
-        self.custom_reg = lambda : torch.FloatTensor([0])   # function which returns the regularization of custom parameters
+        self.custom_reg = lambda : torch.FloatTensor([0]).type(self.dtype)   # function which returns the regularization of custom parameters
         self.optimizer = torch.optim.Adam                   # optimizer function
         self.transfer = torch.sigmoid                       # function which maps output to input [0,1]
     
@@ -110,7 +115,7 @@ class webNNet(torch.nn.Module):
                 # collect voltage bounds from info of network
                 info = network.info
                 voltage_bounds = torch.cat((torch.FloatTensor(info['offset']-info['amplitude']),
-                                            torch.FloatTensor(info['offset']+info['amplitude']))).view(-1,D_in)
+                                            torch.FloatTensor(info['offset']+info['amplitude']))).view(-1,D_in).type(self.dtype)
             else:
                 # default to [[zeros], [ones]]
                 voltage_bounds = torch.cat((torch.zeros(D_in), torch.ones(D_in))).view(-1,D_in)
@@ -124,6 +129,7 @@ class webNNet(torch.nn.Module):
         
         # keep only the values of control gates, input gate values are not used
         voltage_bounds = voltage_bounds[:, control_gates]
+        voltage_bounds = voltage_bounds.type(self.dtype)
 
         # add parameter to model
         number_cv = len(control_gates)                          # nr of control voltages
@@ -236,7 +242,7 @@ class webNNet(torch.nn.Module):
         # calculate regularization of control voltage parameters
         reg_loss = 0
         for name in self.graph.keys():
-            x = getattr(self, name)
+            x = getattr(self, name).type(self.dtype)
             voltage_bounds = self.graph[name]['voltage_bounds']
             reg_loss += torch.sum(torch.relu(voltage_bounds[0] - x) + torch.relu(-voltage_bounds[1] + x))
         return self.loss_fn(y_pred, y) + beta*reg_loss + self.custom_reg()
@@ -277,7 +283,7 @@ class webNNet(torch.nn.Module):
                     if name in self.graph.keys():
                         voltage_bounds = self.graph[name]['voltage_bounds']
                         diff = (voltage_bounds[1]-voltage_bounds[0])
-                        param.data = torch.rand(len(param), device=self.cuda)*diff + voltage_bounds[0]
+                        param.data = torch.rand(len(param), device=self.cuda).type(self.dtype)*diff + voltage_bounds[0]
                     else:
                         param.data = torch.tensor(self.custom_par[name].clone(), device=self.cuda)
         elif isinstance(value, dict):

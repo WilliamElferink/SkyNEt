@@ -50,6 +50,10 @@ def train(self,
           **kwargs):
     train_data, target_data = self.check_cuda(train_data, target_data)
     
+    if torch.cuda.is_available():
+        self.dtype = torch.FloatTensor
+    else:
+        self.dtype = torch.cuda.FloatTensor
     self.check_graph(verbose=verbose)
     
     if optimizer is None:
@@ -79,8 +83,8 @@ def train(self,
         permutation = torch.randperm(len(train_data))
         for i in range(0,len(permutation), batch_size):
             indices = permutation[i:i+batch_size]
-            y_pred = self.forward(train_data[indices])
-            error = self.error_fn(y_pred, target_data[indices], beta)
+            y_pred = self.forward(train_data[indices]).type(self.dtype)
+            error = self.error_fn(y_pred, target_data[indices].type(self.dtype), beta)
             optimizer.zero_grad()
             error.backward()
             optimizer.step()
