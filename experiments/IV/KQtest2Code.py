@@ -8,9 +8,9 @@ import modules.SaveLib as SaveLib
 from SkyNEt.instruments import InstrumentImporter
 Sourcegain = 1
 Igain = 10			#use to make output in nA
-Fs = 500 						#change sample frequency
-siglen=1
-filepath = r'D:\\data\\Tao\\191204-B-Nsub-2min-another-50nm-largerange\\KQtestwANS100Hz\\'
+Fs = 800 						#change sample frequency
+siglen=2
+filepath = r'D:\\data\\Tao\\B1-20200116-another\\KQtestwANS100Hz-2\\'
 name = 'data.txt'
 
 
@@ -20,10 +20,10 @@ Vin2dac=3
 
 
 ivvi = InstrumentImporter.IVVIrack.initInstrument()
-Vgain=5
-V_low=-3/Vgain
-V_high=2/Vgain
-V_step=0.1/Vgain
+Vgain=1
+V_low=-0.5/Vgain
+V_high=0.5/Vgain
+V_step=0.01/Vgain
 Input1 = np.linspace(0, V_low, int(abs(V_low/V_step))+1)
 Input2 = np.linspace(V_low, V_high, int((V_high-V_low)/V_step)+1)+V_step/2
 Input3 = np.linspace(V_high, 0, int(V_high/V_step)+1)
@@ -36,8 +36,8 @@ InstrumentImporter.reset(0,0, exit=False)
 
 
 for vbias in Input:
-	for vin1 in np.linspace(-0.48,0.48,31):
-		for vin2 in np.linspace(-0.48,0.48,31):
+	for vin1 in np.linspace(-0.25,0.25,26):
+		for vin2 in np.linspace(-0.25,0.25,26):
 			CV=np.array([vbias,vin1,vin2])
 			InstrumentImporter.IVVIrack.setControlVoltages(ivvi, CV[0:2]*1000)
 			print(CV)
