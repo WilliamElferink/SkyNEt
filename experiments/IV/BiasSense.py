@@ -14,16 +14,16 @@ ivvi = InstrumentImporter.IVVIrack.initInstrument()
 
 InstrumentImporter.reset(0,0, exit=False)
 
-filepath = r'D:\\data\\Tao\\B1-20200128\\BiasSensewANS100Hz\\'
+filepath = r'D:\\data\\Tao\\A1-20200128-aaanother\\BiasSensewANS100Hz-2\\'
 
 fs = 800
-siglen = 300 # seconds
+siglen = 100 # seconds
 Igain =1
-freq = 13
+freq = 23
 Vgain=1
-V_low=-1.9/Vgain
-V_high=1.9/Vgain
-V_step=0.05/Vgain
+V_low=-1.4/Vgain
+V_high=1.4/Vgain
+V_step=0.1/Vgain
 Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
 Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
 Input3 = np.linspace(V_high, 0, round(V_high/V_step)+1)

@@ -14,17 +14,18 @@ from SkyNEt.instruments import InstrumentImporter
 
 InstrumentImporter.reset(0,0, exit=False)
 
-filepath = r'D:\\data\\Tao\\191204-B-Nsub-2min-another-50nm\\FreqTestwANS100Hz-2\\'
+filepath = r'D:\\data\\Tao\\A1-20200128-aaanother\\FreqTestwANS100Hz\\'
 
-fs = 500
+fs = 800
 siglen = 10 # seconds
-freq = np.logspace(-1,2.3,30)
-V_low=0
-V_high=1.5
+freq = np.logspace(-1,2.6,50)
+V_low=-1.4
+V_high=1.4
 V_step=0.1
-Input1 = np.linspace(0, V_low, int(V_low/V_step)+1)
-Input2 = np.linspace(V_low, V_high, int((V_high-V_low)/V_step)+1)
-Input3 = np.linspace(V_high, 0, int(V_high/V_step)+1)
+Igain=10
+Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
+Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
+Input3 = np.linspace(V_high, 0, round(V_high/V_step)+1)
 
 Input = np.zeros(len(Input1)+len(Input2)+len(Input3))
 Input[0:len(Input1)] = Input1
@@ -39,7 +40,7 @@ for vbias in Input:
 		x[0] = 0.01*np.sin(2*np.pi*ii*np.arange(siglen*fs)/fs)+vbias
 		adwin=InstrumentImporter.adwinIO.initInstrument()
 		output = InstrumentImporter.adwinIO.IO(adwin,x,fs) 
-		output = np.array(output)  
+		output = np.array(output)*Igain  
 		datetime = time.strftime("%d_%m_%Y_%H%M%S")
 		fp = filepath + '/' + datetime + '_vbias_'+str(vbias)+'_freq_'+str(ii) + '_Hz'+'.txt'
 		np.savetxt(fp,output)

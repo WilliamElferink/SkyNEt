@@ -6,14 +6,14 @@ import numpy as np
 import time
 
 Sourcegain = 1
-Igain = 1		#use to make output in nA
+Igain = 10		#use to make output in nA
 Vgain= 1
-V_low = -2/Vgain	#needs to be 0 or negative
-V_high = 2/Vgain	#needs to be 0 or positive
+V_low = -1.3/Vgain	#needs to be 0 or negative
+V_high = 1.3/Vgain	#needs to be 0 or positive
 V_steps = 5000*(V_high-V_low) 	#change stepsize 
 Fs = 1000 						#change sample frequency
-filepath = r'D:\\data\\Tao\\B1-20200128\\IV\\'		
-name = 'p9 to p5.txt'
+filepath = r'D:\\data\\Tao\\A1-20200128-aaanother\\IV\\'		
+name = 'p8 p7.txt'
 instrument = 0  #choose between nidaq (1) and adwin (0)
 
 
@@ -45,7 +45,7 @@ plt.show()
 
 datetime = time.strftime("%d_%m_%Y_%H%M%S")
 filepath = filepath + '\\' + datetime + '_' + name
-#np.savetxt(filepath, (Input*Vgain,output))
+np.savetxt(filepath, (Input*Vgain,output))
 
 
 
