@@ -14,16 +14,16 @@ ivvi = InstrumentImporter.IVVIrack.initInstrument()
 
 InstrumentImporter.reset(0,0, exit=False)
 
-filepath = r'D:\\data\\Tao\\A1-20200128-aaanother\\BiasSensewANS100Hz-2\\'
+filepath = r'D:\\data\\Tao\\A1-20200128-aaanother\\BiasSensewANS100Hz-9\\'
 
 fs = 800
-siglen = 100 # seconds
-Igain =1
-freq = 23
+siglen = 1000 # seconds
+Igain =10
+freq = 0.5
 Vgain=1
-V_low=-1.4/Vgain
+V_low=-1.5/Vgain
 V_high=1.4/Vgain
-V_step=0.1/Vgain
+V_step=0.02/Vgain
 Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
 Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
 Input3 = np.linspace(V_high, 0, round(V_high/V_step)+1)
@@ -39,7 +39,7 @@ for vbias in Input:
 	print(vbias)
 	InstrumentImporter.IVVIrack.setControlVoltages(ivvi, np.array([vbias*1000]))
 	x = np.zeros([2,siglen*fs])
-	x[0] = 0.1*np.sin(2*np.pi*freq*np.arange(siglen*fs)/fs)
+	x[0] = 0*np.sin(2*np.pi*freq*np.arange(siglen*fs)/fs)
 	adwin=InstrumentImporter.adwinIO.initInstrument()
 	output = InstrumentImporter.adwinIO.IO(adwin,x,fs) 
 	output = np.array(output)*Igain
