@@ -8,11 +8,11 @@ import time
 Sourcegain = 1
 Igain = 10			#use to make output in nA
 Vgain = 1
-V_low = -1.4/Vgain			#needs to be 0 or negative
-V_high = 1.4/Vgain		#needs to be 0 or positive
+V_low = -0.76/Vgain			#needs to be 0 or negative
+V_high = 0.76/Vgain		#needs to be 0 or positive
 V_step = 0.02/Vgain   #change stepsize 
 Fs = 800 						#change sample frequency
-SL = 310 #in seconds
+SL = 300 #in seconds
 filepath = r'D:\\data\\Tao\\A1-20200128-aaanother\\BiasNoisewANS100Hz-2\\'
 name = 'p8 to p7'
 instrument = 0  #choose between nidaq (1) and adwin (0)
