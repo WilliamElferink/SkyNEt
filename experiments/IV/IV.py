@@ -8,8 +8,8 @@ import time
 Sourcegain = 1
 Igain = 10		#use to make output in nA
 Vgain= 1
-V_low = -0.75/Vgain	#needs to be 0 or negative
-V_high = 0.75/Vgain	#needs to be 0 or positive
+V_low = -0.1/Vgain	#needs to be 0 or negative
+V_high = 0.1/Vgain	#needs to be 0 or positive
 V_steps = 5000*(V_high-V_low) 	#change stepsize 
 Fs = 1000 						#change sample frequency
 filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed\\IV\\'		

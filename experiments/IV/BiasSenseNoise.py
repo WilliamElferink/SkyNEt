@@ -14,10 +14,10 @@ ivvi = InstrumentImporter.IVVIrack.initInstrument()
 
 InstrumentImporter.reset(0,0, exit=False)
 
-filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed\\BiasSensewANS100Hz-fornoise\\'
+filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed\\BiasSensewANS100Hz-fornoise-2\\'
 
 fs = 800
-siglen = 300 # seconds
+siglen = 500 # seconds
 Igain =10
 freq = 1
 Vgain=1

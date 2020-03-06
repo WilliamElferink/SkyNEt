@@ -8,11 +8,11 @@ import modules.SaveLib as SaveLib
 from SkyNEt.instruments import InstrumentImporter
 Sourcegain = 1
 Igain = 10			#use to make output in nA
-Fs = 100 						#change sample frequency
-freq = 1
-#siglen=20
-filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed\\KQtestwANS100HzOneInput-sweep-2\\'
-name = 'p4 p5 p9.txt'
+Fs = 200 						#change sample frequency
+freq = 13
+siglen=0.5
+filepath = r'D:\\data\\Tao\\A1-20200128-aaanother\\KQtestwANS100HzOneInput-average\\'
+name = 'p8 p7 p4.txt'
 
 
 Vbiasdac=1
@@ -35,7 +35,7 @@ Input[len(Input1)+len(Input2):len(Input1)+len(Input2)+len(Input3)] = Input3
 
 Vg_low=-0.25
 Vg_high=0.25
-Vg_step=0.0001
+Vg_step=0.001
 Inputg1 = np.linspace(0, Vg_low, round(abs(Vg_low/Vg_step))+1)
 Inputg2 = np.linspace(Vg_low, Vg_high, round((Vg_high-Vg_low)/Vg_step)+1)
 Inputg3 = np.linspace(Vg_high, 0, round(Vg_high/Vg_step)+1)
@@ -51,12 +51,15 @@ InstrumentImporter.reset(0,0, exit=False)
 for vbias in Input:
 	print(vbias)
 	InstrumentImporter.IVVIrack.setControlVoltages(ivvi, np.array([vbias*1000]))
-	x = Inputg
-	adwin=InstrumentImporter.adwinIO.initInstrument()
-	Output = InstrumentImporter.adwinIO.IO(adwin,x,Fs)*Igain
-	datetime = time.strftime("%d_%m_%Y_%H%M%S")
-	fp = filepath +'/'+ datetime + '_vbias_' + str(vbias*Vgain) +'_'+name
-	np.savetxt(fp,Output.transpose())
+	for Vg in Inputg:
+		print('Vg:')
+		print(Vg)
+		x = 0*np.sin(2*np.pi*freq*np.arange(siglen*Fs)/Fs)+Vg
+		adwin=InstrumentImporter.adwinIO.initInstrument()
+		Output = InstrumentImporter.adwinIO.IO(adwin,x,Fs)*Igain
+		datetime = time.strftime("%d_%m_%Y_%H%M%S")
+		fp = filepath +'/'+ datetime + '_vbias_' + str(vbias*Vgain) +'_vin1_'+str(Vg)+'_'+name
+		np.savetxt(fp,Output.transpose())
 
 
 InstrumentImporter.reset(0,0)
