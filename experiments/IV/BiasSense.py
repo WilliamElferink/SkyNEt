@@ -11,18 +11,18 @@ from SkyNEt.instruments import InstrumentImporter
 
 
 ivvi = InstrumentImporter.IVVIrack.initInstrument()
-
+#p8 p7 p4
 InstrumentImporter.reset(0,0, exit=False)
 
-filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed\\BiasSensewANS100Hz-2\\'
+filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed-another\\BiasSensewANS100Hz\\'
 
 fs = 800
-siglen = 500 # seconds
+siglen = 300 # seconds
 Igain =10
 freq = 1
 Vgain=1
-V_low=-0.75/Vgain
-V_high=0.75/Vgain
+V_low=0/Vgain
+V_high=0.8/Vgain
 V_step=0.01/Vgain
 Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
 Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
@@ -34,6 +34,7 @@ Input[0:len(Input1)] = Input1
 Input[len(Input1):len(Input1)+len(Input2)] = Input2
 Input[len(Input1)+len(Input2):len(Input1)+len(Input2)+len(Input3)] = Input3
 print(Input)
+fcount=1
 for vbias in Input:
 
 	print(vbias)
@@ -45,8 +46,8 @@ for vbias in Input:
 	output = np.array(output)*Igain
 	print(np.average(output.transpose()))  
 	datetime = time.strftime("%d_%m_%Y_%H%M%S")
-	fp = filepath + '/' + datetime + '_vbias_'+str(vbias)+'_freq_'+str(freq) + '_Hz'+'.txt'
+	fp = filepath + '/' + str(fcount) +'_'+ datetime + '_vbias_'+str(vbias)+'_freq_'+str(freq) + '_Hz'+'.txt'
 	np.savetxt(fp,output.transpose())
-    
+	fcount=fcount+1
 
 InstrumentImporter.reset(0,0)

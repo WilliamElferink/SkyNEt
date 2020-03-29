@@ -11,7 +11,7 @@ Igain = 10			#use to make output in nA
 Fs = 100 						#change sample frequency
 freq = 1
 #siglen=20
-filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed\\KQtestwANS100HzOneInput-sweep-2\\'
+filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed-another\\KQtestwANS100HzOneInput-sweep\\'
 name = 'p4 p5 p9.txt'
 
 
@@ -20,8 +20,8 @@ Vbiasdac=1
 
 ivvi = InstrumentImporter.IVVIrack.initInstrument()
 Vgain=1
-V_low=-0.75/Vgain
-V_high=0.75/Vgain
+V_low=0/Vgain
+V_high=0.8/Vgain
 V_step=0.01/Vgain
 Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
 Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
@@ -47,7 +47,7 @@ Inputg[len(Inputg1)+len(Inputg2):len(Inputg1)+len(Inputg2)+len(Inputg3)] = Input
 
 InstrumentImporter.reset(0,0, exit=False)
 
-
+fcount=1
 for vbias in Input:
 	print(vbias)
 	InstrumentImporter.IVVIrack.setControlVoltages(ivvi, np.array([vbias*1000]))
@@ -55,8 +55,9 @@ for vbias in Input:
 	adwin=InstrumentImporter.adwinIO.initInstrument()
 	Output = InstrumentImporter.adwinIO.IO(adwin,x,Fs)*Igain
 	datetime = time.strftime("%d_%m_%Y_%H%M%S")
-	fp = filepath +'/'+ datetime + '_vbias_' + str(vbias*Vgain) +'_'+name
+	fp = filepath +'/'+ str(fcount) + datetime + '_vbias_' + str(vbias*Vgain) +'_'+name
 	np.savetxt(fp,Output.transpose())
+	fcount=fcount+1
 
 
 InstrumentImporter.reset(0,0)

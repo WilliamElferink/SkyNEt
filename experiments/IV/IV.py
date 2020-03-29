@@ -8,12 +8,12 @@ import time
 Sourcegain = 1
 Igain = 10		#use to make output in nA
 Vgain= 1
-V_low = -0.1/Vgain	#needs to be 0 or negative
-V_high = 0.1/Vgain	#needs to be 0 or positive
+V_low = -1.5/Vgain	#needs to be 0 or negative
+V_high = 1.5/Vgain	#needs to be 0 or positive
 V_steps = 5000*(V_high-V_low) 	#change stepsize 
 Fs = 1000 						#change sample frequency
-filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed\\IV\\'		
-name = 'p4 p5.txt'
+filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed-another\\IV\\'		
+name = 'p4 p7.txt'
 instrument = 0  #choose between nidaq (1) and adwin (0)
 
 
