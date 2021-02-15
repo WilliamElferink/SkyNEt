@@ -14,25 +14,26 @@ ivvi = InstrumentImporter.IVVIrack.initInstrument()
 
 InstrumentImporter.reset(0,0, exit=False)
 
-filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed-another\\BiasSensewANS100Hz-fornoise\\'
+filepath = r'D:\\data\\Tao\\Hongwai20200624\\TDependent\\1578\\300K\\'
 #p8 p7 p4
 fs = 800
-siglen = 300 # seconds
-Igain =10
+siglen = 30 # seconds
+Igain =1000
 freq = 1
 Vgain=1
 V_low=0/Vgain
-V_high=0.8/Vgain
+V_high=0.05/Vgain
 V_step=0.01/Vgain
-Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
-Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
-Input3 = np.linspace(V_high, 0, round(V_high/V_step)+1)
+# Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
+# Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
+# Input3 = np.linspace(V_high, 0, round(V_high/V_step)+1)
 
 
-Input = np.zeros(len(Input1)+len(Input2)+len(Input3))
-Input[0:len(Input1)] = Input1
-Input[len(Input1):len(Input1)+len(Input2)] = Input2
-Input[len(Input1)+len(Input2):len(Input1)+len(Input2)+len(Input3)] = Input3
+# Input = np.zeros(len(Input1)+len(Input2)+len(Input3))
+# Input[0:len(Input1)] = Input1
+# Input[len(Input1):len(Input1)+len(Input2)] = Input2
+# Input[len(Input1)+len(Input2):len(Input1)+len(Input2)+len(Input3)] = Input3
+Input = np.linspace(V_low, V_high, round(abs(V_high/V_step))+1)
 print(Input)
 fcount=1
 for vbias in Input:

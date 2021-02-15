@@ -11,7 +11,7 @@ Igain = 10			#use to make output in nA
 Fs = 100 						#change sample frequency
 freq = 1
 #siglen=20
-filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed-another\\KQtestwANS100HzOneInput-sweep\\'
+filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed-aaanother20200402\\KQtestwANS100HzOneInput-sweep\\'
 name = 'p4 p5 p9.txt'
 
 
@@ -21,7 +21,7 @@ Vbiasdac=1
 ivvi = InstrumentImporter.IVVIrack.initInstrument()
 Vgain=1
 V_low=0/Vgain
-V_high=0.8/Vgain
+V_high=1.2/Vgain
 V_step=0.01/Vgain
 Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
 Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
@@ -33,8 +33,8 @@ Input[len(Input1):len(Input1)+len(Input2)] = Input2
 Input[len(Input1)+len(Input2):len(Input1)+len(Input2)+len(Input3)] = Input3
 
 
-Vg_low=-0.25
-Vg_high=0.25
+Vg_low=-0.4
+Vg_high=0.4
 Vg_step=0.0001
 Inputg1 = np.linspace(0, Vg_low, round(abs(Vg_low/Vg_step))+1)
 Inputg2 = np.linspace(Vg_low, Vg_high, round((Vg_high-Vg_low)/Vg_step)+1)

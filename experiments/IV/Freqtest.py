@@ -14,24 +14,25 @@ from SkyNEt.instruments import InstrumentImporter
 
 InstrumentImporter.reset(0,0, exit=False)
 
-filepath = r'D:\\data\\Tao\\A1-20200128-aaanother\\FreqTestwANS100Hz\\'
+filepath = r'D:\\data\\Tao\\Hongwai20200624\\FreqtestwANS100Hz\\'
 
 fs = 800
 siglen = 10 # seconds
 freq = np.logspace(-1,2.6,50)
-V_low=-1.4
-V_high=1.4
-V_step=0.1
-Igain=10
-Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
-Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
-Input3 = np.linspace(V_high, 0, round(V_high/V_step)+1)
+V_low=0
+V_high=0.1
+V_step=0.05
+Igain=1000
+# Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
+# Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
+# Input3 = np.linspace(V_high, 0, round(V_high/V_step)+1)
 
-Input = np.zeros(len(Input1)+len(Input2)+len(Input3))
-Input[0:len(Input1)] = Input1
-Input[len(Input1):len(Input1)+len(Input2)] = Input2
-Input[len(Input1)+len(Input2):len(Input1)+len(Input2)+len(Input3)] = Input3
-
+# Input = np.zeros(len(Input1)+len(Input2)+len(Input3))
+# Input[0:len(Input1)] = Input1
+# Input[len(Input1):len(Input1)+len(Input2)] = Input2
+# Input[len(Input1)+len(Input2):len(Input1)+len(Input2)+len(Input3)] = Input3
+Input = np.linspace(V_low, V_high, round(abs(V_high/V_step))+1)
+print(Input)
 for vbias in Input:
 	for ii in freq:
 		print(vbias)

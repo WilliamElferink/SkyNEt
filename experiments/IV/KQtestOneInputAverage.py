@@ -11,8 +11,8 @@ Igain = 10			#use to make output in nA
 Fs = 1000 						#change sample frequency
 freq = 13
 siglen=0.1
-filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed\\KQtestwANS100HzOneInput-average\\'
-name = 'p8 p7 p4.txt'
+filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed-aaanother20200402\\KQtestwANS100HzOneInput-average\\'
+name = 'p4 p5 p9.txt'
 
 
 Vbiasdac=1
@@ -21,7 +21,7 @@ Vbiasdac=1
 ivvi = InstrumentImporter.IVVIrack.initInstrument()
 Vgain=1
 V_low=0/Vgain
-V_high=0.8/Vgain
+V_high=1.2/Vgain
 V_step=0.01/Vgain
 Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
 Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
@@ -33,9 +33,9 @@ Input[len(Input1):len(Input1)+len(Input2)] = Input2
 Input[len(Input1)+len(Input2):len(Input1)+len(Input2)+len(Input3)] = Input3
 
 
-Vg_low=-0.25
-Vg_high=0.25
-Vg_step=0.0001
+Vg_low=-0.4
+Vg_high=0.4
+Vg_step=0.001
 Inputg1 = np.linspace(0, Vg_low, round(abs(Vg_low/Vg_step))+1)
 Inputg2 = np.linspace(Vg_low, Vg_high, round((Vg_high-Vg_low)/Vg_step)+1)
 Inputg3 = np.linspace(Vg_high, 0, round(Vg_high/Vg_step)+1)
@@ -53,8 +53,8 @@ for vbias in Input:
 	InstrumentImporter.IVVIrack.setControlVoltages(ivvi, np.array([vbias*1000]))
 	Ii=0
 	for Vg in Inputg:
-		print('Vg:')
-		print(Vg)
+	#	print('Vg:')
+	#	print(Vg)
 		x = 0*np.sin(2*np.pi*freq*np.arange(siglen*Fs)/Fs)+Vg
 		adwin=InstrumentImporter.adwinIO.initInstrument()
 		Output = InstrumentImporter.adwinIO.IO(adwin,x,Fs)*Igain

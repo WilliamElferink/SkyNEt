@@ -11,10 +11,10 @@ from SkyNEt.instruments import InstrumentImporter
 
 
 ivvi = InstrumentImporter.IVVIrack.initInstrument()
-#p8 p7 p4
+#p4 p3 p10
 InstrumentImporter.reset(0,0, exit=False)
 
-filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed-another\\BiasSensewANS100Hz\\'
+filepath = r'D:\\data\\Tao\\B-Nsub-20200228-A-annealed-aaanother20200402\\BiasSensewANS100Hz-2\\'
 
 fs = 800
 siglen = 300 # seconds
@@ -22,7 +22,7 @@ Igain =10
 freq = 1
 Vgain=1
 V_low=0/Vgain
-V_high=0.8/Vgain
+V_high=1.2/Vgain
 V_step=0.01/Vgain
 Input1 = np.linspace(0, V_low, round(abs(V_low/V_step))+1)
 Input2 = np.linspace(V_low, V_high, round((V_high-V_low)/V_step)+1)+V_step/2
