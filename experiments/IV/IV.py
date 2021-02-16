@@ -9,12 +9,12 @@ ivvi = InstrumentImporter.IVVIrack.initInstrument()
 Sourcegain = 1
 Igain = 1000		#use to make output in nA
 Vgain= 1
-V_low = -0.1/Vgain	#needs to be 0 or negative
-V_high = 0.1/Vgain	#needs to be 0 or positive
+V_low = -1/Vgain	#needs to be 0 or negative
+V_high = 1/Vgain	#needs to be 0 or positive
 V_steps = 1000*(V_high-V_low) 	#change stepsize 
 Fs = 1000 						#change sample frequency
-filepath = r'D:\\data\\Tao\\Hongwai20200703\\IVRT1587\\'		
-name = 'WideBar1571gate-0V.txt'
+filepath = r'D:\\data\\Tao\\TCTOtest\\simtest\\'		
+name = '100MOhm.txt'
 instrument = 0  #choose between nidaq (1) and adwin (0)
 InstrumentImporter.reset(0,0, exit=False)
 InstrumentImporter.IVVIrack.setControlVoltages(ivvi, np.array([0*1000/5]))
