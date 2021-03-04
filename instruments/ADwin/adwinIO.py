@@ -73,7 +73,7 @@ def IO(adw, Input, Fs, inputPorts = [1, 0, 0, 0, 0, 0, 0], highRange = False):
     '''
     # Sanity check on input voltages
     if not highRange:
-        if np.max(abs(Input)) > 2:  
+        if np.max(abs(Input)) > 10:  
             print('WARNING: input voltages exceed threshold of 2V: highest absolute voltage is ' + str(max(abs(y))))
             print('If you want to use high range voltages, set highRange to True.')
             print('Aborting measurement...')
